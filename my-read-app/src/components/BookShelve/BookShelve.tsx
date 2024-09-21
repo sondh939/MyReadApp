@@ -1,39 +1,36 @@
 import "../../App.css"
-import {BookAttr, SHELF_STATUS} from "../../type.ts";
-import {useEffect, useState} from "react";
+import {Shelve} from "../../type.ts";
 import Book from "../Book";
 
 
 type BookShelveProps = {
-    listBooks: BookAttr[];
-    shelveStatus: SHELF_STATUS;
+    listBooks: any;
+    shelve: Shelve;
 }
 
 const BookShelve = (props: BookShelveProps) => {
-    const {listBooks, shelveStatus} = props;
-    const [titleShleve, setTitleShleve] = useState("")
+    const {listBooks, shelve} = props;
 
-    useEffect(() => {
-        if (shelveStatus === SHELF_STATUS.CURRENT_READING) {
-            setTitleShleve("Currently Reading")
-        } else if (shelveStatus === SHELF_STATUS.READ) {
-            setTitleShleve("Read")
-        } else {
-            setTitleShleve("Want to read")
-        }
-    }, [shelveStatus])
     return (
         <div className="bookshelf">
-            <h2 className="bookshelf-title">{titleShleve}</h2>
-            <div key={titleShleve} className="bookshelf-books">
-                {listBooks.map((book) => {
-                    return (
-                        <Book key={book.id} id={book.id} title={book.title} authors={book.authors}
-                              imageLinks={book.imageLinks} shelf={book.shelf}
-                        />
-                    )
-                })}
-            </div>
+            {
+                shelve.map(item => {
+                    const booksOnShelf = listBooks[item.shelveName];
+                    if (booksOnShelf) {
+                        return (
+                            <div className="bookshelf-books" key={item.shelveName}>
+                                <h2 className="bookshelf-title">{item.shelveDisplayName}</h2>
+                                <div className="books-grid">
+                                    {booksOnShelf.map(book => (
+                                        <Book book={book} key={book.id}/>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    }
+                    return null;
+                })
+            }
         </div>
     )
 }
