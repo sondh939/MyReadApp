@@ -1,3 +1,5 @@
+import {BookAttr} from "../type.ts";
+
 const api = "https://reactnd-books-api.udacity.com";
 
 let token = localStorage.token;
@@ -19,8 +21,8 @@ export const getAll = () =>
         .then((res) => res.json())
         .then((data) => data.books);
 
-export const update = (bookId: string, shelf: string) =>
-    fetch(`${api}/books/${bookId}`, {
+export const update = (book: BookAttr, shelf: string) =>
+    fetch(`${api}/books/${book.id}`, {
         method: "PUT",
         headers: {
             ...headers,

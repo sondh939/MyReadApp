@@ -1,33 +1,41 @@
 import "../../App.css"
-import {BookAttr, SHELF_STATUS} from "../../type.ts";
+import {BookAttr, SHELF_STATUS, Shelve, SHELVE_DISPLAY} from "../../type.ts";
+import {useState} from "react";
 
 type BookProps = {
     book: BookAttr;
+    onChangeShelve: any;
+    shelve: SHELF_STATUS;
 }
+
+const shelveList: Shelve[] = [
+    {
+        shelveId: "1",
+        shelveName: SHELF_STATUS.CURRENT_READING,
+        shelveDisplayName: SHELVE_DISPLAY.CURRENT_SHELVE,
+    }, {
+        shelveId: "2",
+        shelveName: SHELF_STATUS.WANT_TO_READ,
+        shelveDisplayName: SHELVE_DISPLAY.WANT_TO_SHELVE,
+    }, {
+        shelveId: "3",
+        shelveName: SHELF_STATUS.READ,
+        shelveDisplayName: SHELVE_DISPLAY.READ_SHELVE,
+    },
+]
 
 const Book = (props: BookProps) => {
     const {
-        book
+        book, shelve, onChangeShelve
     } = props;
-    // const [shelve, setShelve] = useState(shelf)
+    const [currentShelf, setCurrentShelf] = useState(shelve)
 
-    // const handleChange = (event) => {
-    //     const newShelf = event.target.value;
-    //     setShelve(newShelf)
-    //     updateBookShelve(id, newShelf)
-    // }
+    const handleChange = (event) => {
+        const newShelf = event.target.value;
+        setCurrentShelf(newShelf);
+        onChangeShelve(book, newShelf);
+    }
 
-    // const updateBookShelve = (bookId: string, newShelfStatus: string) => {
-    //     try {
-    //         const updateShelf = async () => {
-    //             const res = await update(bookId, newShelfStatus)
-    //             console.log("res update shelf ====>>>> ", res)
-    //         }
-    //         updateShelf()
-    //     } catch (error) {
-    //         console.log("Error updating book!: ", error)
-    //     }
-    // }
 
     return (
         <div className="book">
@@ -42,23 +50,19 @@ const Book = (props: BookProps) => {
                     }}
                 ></div>
                 <div className="book-shelf-changer">
-                    <select onChange={() => {
-                    }}>
-                        <option value="none" disabled>
+                    <select onChange={handleChange} value={currentShelf}>
+                        <option disabled>
                             Move to...
                         </option>
-                        <option value={SHELF_STATUS.CURRENT_READING}
-                                selected={book.shelf === SHELF_STATUS.CURRENT_READING}
-                        >
-                            Currently Reading
-                        </option>
-                        <option value={SHELF_STATUS.WANT_TO_READ} selected={book.shelf === SHELF_STATUS.WANT_TO_READ}
-                        >Want to
-                            Read
-                        </option>
-                        <option value={SHELF_STATUS.READ} selected={book.shelf === SHELF_STATUS.READ}
-                        >Read
-                        </option>
+                        {
+                            shelveList.map((shelf) => {
+                                return (
+                                    <option key={shelf.shelveId} id={shelf.shelveId} value={shelf.shelveName}
+                                    >
+                                        {shelf.shelveDisplayName}
+                                    </option>)
+                            })
+                        }
                     </select>
                 </div>
             </div>

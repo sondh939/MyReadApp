@@ -4,7 +4,12 @@ import Book from "../components/Book";
 import {BookAttr} from "../type.ts";
 import {search} from "../service/BooksAPI.tsx";
 
-const SearchScreen = () => {
+type SearchScreenProps = {
+    onChangeShelve: any;
+}
+
+const SearchScreen = (props: SearchScreenProps) => {
+    const {onChangeShelve} = props;
     const [inputSearch, setInputSearch] = useState("");
     const [listBooksBySearch, setListBooksBySearch] = useState([])
     const navigate = useNavigate();
@@ -50,7 +55,7 @@ const SearchScreen = () => {
             <div className="search-books-results">
                 <ol className="books-grid">
                     {listBooksBySearch.length > 0 ? (listBooksBySearch.map((book: BookAttr) => (
-                        <Book book={book} key={book.id}/>
+                        <Book book={book} key={book.id} onChangeShelve={onChangeShelve}/>
 
                     ))) : (
                         <div>

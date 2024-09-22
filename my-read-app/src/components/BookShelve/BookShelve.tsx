@@ -6,10 +6,11 @@ import Book from "../Book";
 type BookShelveProps = {
     listBooks: any;
     shelve: Shelve;
+    onChangeShelve: any;
 }
 
 const BookShelve = (props: BookShelveProps) => {
-    const {listBooks, shelve} = props;
+    const {listBooks, shelve, onChangeShelve} = props;
 
     return (
         <div className="bookshelf">
@@ -22,7 +23,8 @@ const BookShelve = (props: BookShelveProps) => {
                                 <h2 className="bookshelf-title">{item.shelveDisplayName}</h2>
                                 <div className="books-grid">
                                     {booksOnShelf.map(book => (
-                                        <Book book={book} key={book.id}/>
+                                        <Book book={book} key={book.id} shelve={item.shelveName}
+                                              onChangeShelve={onChangeShelve}/>
                                     ))}
                                 </div>
                             </div>

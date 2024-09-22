@@ -1,13 +1,12 @@
 import "./App.css";
 import {useEffect, useState} from "react";
-import {getAll} from "./service/BooksAPI";
-import {SHELF_STATUS, Shelve, SHELVE_DISPLAY} from "./type.ts";
+import {getAll, update} from "./service/BooksAPI";
+import {BookAttr, SHELF_STATUS, Shelve, SHELVE_DISPLAY} from "./type.ts";
 import {Route, Routes} from "react-router-dom";
 import SearchScreen from "./screen/SearchScreen.tsx";
 import MainScreen from "./screen/MainScreen.tsx";
 
 function App() {
-    const [showSearchPage, setShowSearchpage] = useState(false);
     const [listAllBooks, setListAllBooks] = useState({});
 
     const Shelve: Shelve = [
@@ -44,11 +43,33 @@ function App() {
         getData()
     }, [])
 
+    const updateBookShleve = async (book: BookAttr, shelve: string) => {
+        try {
+            await update(book, shelve);
+            setListAllBooks(prevList => {
+                const updateList = {...prevList}
+                if (book.shelf && updateList[book.shelf]) {
+                    updateList[book.shelf] = updateList[book.shelf].filter(b => b.id !== book.id);
+                }
+                updateList[shelve] = [...(updateList[shelve] || []), {...book, shelf: shelve}];
+
+                return updateList;
+            })
+        } catch (error) {
+            window.alert("Can't update book!!!")
+        }
+    }
+
+    const onChangeShelve = (book: BookAttr, shelve: string) => {
+        updateBookShleve(book, shelve);
+    }
+
     return (
         <div className="app">
             <Routes>
-                <Route exact path="/" element={<MainScreen listBooks={listAllBooks} shelve={Shelve}/>}/>
-                <Route path="/search" element={<SearchScreen/>}/>
+                <Route exact path="/" element={<MainScreen listBooks={listAllBooks} shelve={Shelve}
+                                                           onChangeShelve={onChangeShelve}/>}/>
+                <Route path="/search" element={<SearchScreen onChangeShelve={onChangeShelve}/>}/>
             </Routes>
         </div>
     );
