@@ -10,6 +10,7 @@
 
 ## Project Structure
   > README.md - _This file._
+
   > SEASRCH_TERMS.md - _The whitelisted short collection of available search terms for you to use with your app._
   > vite.config.ts
   > tsconfig.node.json
