@@ -16,7 +16,18 @@ const MainScreen = (props: MainScreenProps) => {
             <div className="list-books-title">
                 <h1>MyReads</h1>
             </div>
-            <BookShelve listBooks={listBooks} shelve={shelve} onChangeShelve={onChangeShelve}/>
+            {
+                shelve.map(item => {
+                    const booksOnShelf = listBooks[item.shelveName];
+                    if (booksOnShelf) {
+                        return (
+                            <BookShelve bookShelveId={item.shelveId} listBook={booksOnShelf}
+                                        shelve={item.shelveDisplayName}
+                                        onChangeShelve={onChangeShelve}/>
+                        )
+                    }
+                })
+            }
             <div className="open-search">
                 <a onClick={() => navigate("/search")}>Add a book</a>
             </div>

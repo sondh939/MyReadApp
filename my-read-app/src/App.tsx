@@ -69,7 +69,8 @@ function App() {
             <Routes>
                 <Route exact path="/" element={<MainScreen listBooks={listAllBooks} shelve={Shelve}
                                                            onChangeShelve={onChangeShelve}/>}/>
-                <Route path="/search" element={<SearchScreen onChangeShelve={onChangeShelve}/>}/>
+                <Route path="/search"
+                       element={<SearchScreen onChangeShelve={onChangeShelve} listBooks={listAllBooks}/>}/>
             </Routes>
         </div>
     );

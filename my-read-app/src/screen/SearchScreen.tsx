@@ -6,25 +6,35 @@ import {search} from "../service/BooksAPI.tsx";
 
 type SearchScreenProps = {
     onChangeShelve: any;
+    listBooks: any;
 }
 
 const SearchScreen = (props: SearchScreenProps) => {
-    const {onChangeShelve} = props;
+    const {onChangeShelve, listBooks} = props;
     const [inputSearch, setInputSearch] = useState("");
-    const [listBooksBySearch, setListBooksBySearch] = useState([])
+    const [listBooksBySearch, setListBooksBySearch] = useState([]);
+    const [result, setResult] = useState("FIRST SEARCH");
     const navigate = useNavigate();
 
     const handleSearch = (inputText: string) => {
         const getBookBySearch = async (text: string) => {
             if (inputText === "") {
                 setListBooksBySearch([])
+                setResult("")
             } else {
-                const res = await search(text, "10").catch((err: Error) => {
-                    if (err instanceof Error) {
+                try {
+                    const res = await search(text, "10")
+                    if (res.error) {
                         setListBooksBySearch([])
+                        setResult("CAN'T FIND BOOK!")
+                    } else {
+                        setListBooksBySearch(res)
+                        setResult("")
                     }
-                })
-                setListBooksBySearch(res)
+                } catch (err: Error) {
+                    setListBooksBySearch([])
+                    setResult("ERROR!!!!")
+                }
             }
         }
         getBookBySearch(inputText)
@@ -33,6 +43,7 @@ const SearchScreen = (props: SearchScreenProps) => {
     useEffect(() => {
         handleSearch(inputSearch)
     }, [inputSearch]);
+
 
     return (
         <div className="search-books">
@@ -54,14 +65,11 @@ const SearchScreen = (props: SearchScreenProps) => {
             </div>
             <div className="search-books-results">
                 <ol className="books-grid">
-                    {listBooksBySearch.length > 0 ? (listBooksBySearch.map((book: BookAttr) => (
-                        <Book book={book} key={book.id} onChangeShelve={onChangeShelve}/>
+                    {
+                        listBooksBySearch.length > 0 && (listBooksBySearch.map((book: BookAttr) => (
+                            <Book book={book} key={book.id} onChangeShelve={onChangeShelve}/>
 
-                    ))) : (
-                        <div>
-                            <p>No book found!</p>
-                        </div>
-                    )}
+                        )))}
                 </ol>
             </div>
         </div>
