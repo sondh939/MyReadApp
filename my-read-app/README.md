@@ -12,34 +12,65 @@
   > README.md - _This file._
 
   > SEASRCH_TERMS.md - _The whitelisted short collection of available search terms for you to use with your app._
+
   > vite.config.ts
+
   > tsconfig.node.json
+
   > tsconfig.json
+
   > tsconfig.app.json
+
   > package.json - _npm package manager file._
+
   > package-lock.json
+
   > public
+
     > vite.svg - _system default icon._
+    
   > src
+
     > components
+
     > Book
+
         > Book.tsx - _Component for book._
+
         > index.ts
+
       > BookShelve
+
         > BookShelve.tsx - _Component for shelf of book._
+
         > index.ts
+
     > icons
+
       > add.svg
+
       > arror-back.svg
+
       > arror-drop-down.svg
+
     > screen
+
       > Mainscreen.tsx - _Main UI of web app. Contain 3 shelves for each status of books._
+
       > SearchScreen.tsx - _Contain UI of Search function._
+
     > service
+
       > BooksAPI.tsx - _Contain API service for project._
+
     > App.css - _Contain styles of project._
+
     > App.tsx - _This is the root of project. Contain Routes and logic features in project._
+
     > index.css
+
     > main.tsx
+
     > type.ts - _This file includes all types of project._
+
     > vite-env.d.ts
